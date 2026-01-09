@@ -1,41 +1,45 @@
-version: '3.8'
 services:
-  mysql-db:
+  db:
     image: mysql:8.0
-    container_name: mysql-db
-    restart: always
+    container_name: mysql_db
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: demo_db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - "3306:3306"
-    networks:
-      - demo-network
+  
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin_gui
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
 
-  core:
+  backend:
     build: ./core
-    container_name: demo-core
+    container_name: spring_backend
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE}?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "8080:8080"
-    depends_on:
-      - mysql-db
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/demo_db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-    networks:
-      - demo-network
 
-  demo-ui:
-    build: ./UI
-    container_name: demo-ui
+  frontend:
+    build: 
+      context: ./UI
+      dockerfile: Dockerfile
+    container_name: angular_frontend
     ports:
-      - "4200:4200"
+      - "4200:80"
     depends_on:
-      - core
-    networks:
-      - demo-network
-
-networks:
-  demo-network:
-    driver: bridge
+      - backend
