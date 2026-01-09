@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo_db
+    ports:
+      - "3306:3306"
+    networks:
+      - demo-network
+
+  core:
+    build: ./core
+    container_name: demo-core
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/demo_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    networks:
+      - demo-network
+
+  demo-ui:
+    build: ./UI
+    container_name: demo-ui
+    ports:
+      - "4200:4200"
+    depends_on:
+      - core
+    networks:
+      - demo-network
+
+networks:
+  demo-network:
+    driver: bridge
