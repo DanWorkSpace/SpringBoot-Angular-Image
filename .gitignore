@@ -1,0 +1,6 @@
+# IDEs and System files
+.idea/
+.vscode/
+*.swp
+*.DS_Store
+.env

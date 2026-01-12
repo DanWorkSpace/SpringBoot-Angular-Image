@@ -1,0 +1,17 @@
+# Dependency directories
+UI/node_modules/
+
+# Angular build output
+UI/dist/
+UI/tmp/
+UI/out-tsc/
+UI/bazel-out/
+
+# Log files
+UI/npm-debug.log*
+UI/yarn-debug.log*
+UI/yarn-error.log*
+
+# Unit & E2E testing
+UI/coverage/
+UI/.angular/

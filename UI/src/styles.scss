@@ -1,1 +1,22 @@
-body { font-family: sans-serif; background-color: #f4f4f4; }
+// Custom variables
+$brand-color: #dc3545; // Danger Red
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+// Custom button styling
+.btn-danger {
+  background-color: $brand-color;
+  border: none;
+  &:hover {
+    background-color: darken($brand-color, 10%);
+  }
+}
