@@ -1,0 +1,16 @@
+# Maven
+core/target/
+core/pom.xml.tag
+core/pom.xml.releaseBackup
+core/pom.xml.versionsBackup
+core/pom.xml.next
+core/release.properties
+core/dependency-reduced-pom.xml
+core/buildNumber.properties
+core/.mvn/wrapper/maven-wrapper.jar
+
+# Compiled class files
+core/*.class
+
+# Log files
+core/*.log
